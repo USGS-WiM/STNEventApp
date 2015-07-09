@@ -206,7 +206,8 @@ require([
                     });
 
                 } else {
-                    layerDefinitions[0] = "";
+                    layerDefinitions[0] = "" +
+                    "";
                     identifyParams.layerDefinitions = layerDefinitions;
 
                     identify.execute(identifyParams, function (idResults) {
@@ -224,6 +225,22 @@ require([
 
             }
 
+        }
+
+        ///do the creation of tabs, labels, data, etc based on response. then show modal when finished.
+
+        if (idSensorArray.length > 0) {
+            var sensorTab = $('<li role="presentation" class="active"><a href="#sensorTabPane" data-toggle="tab"><i class="fa fa-caret-square-o-right"></i>&nbsp;&nbsp;Sensors</a></li>');
+            $('#tabs').append(sensorTab);
+            var sensorTabPane = $('<div class="tab-pane active" id="sensorTabPane"></br>' +
+                                    '<table class="table table-hover">' +
+                                        '<tr><td><strong>Date: </strong></td><td><span id="conditionsDate"></span></td></tr> ' +
+                                        '<tr><td><strong>Beach Name: </strong></td><td><span class="beachName"></span></td></tr> ' +
+                                        '<tr><td><strong>Lake Temperature (&deg;F): </strong></td><td><span id="lakeTemp"></span></td></tr> ' +
+                                        '<tr><td><strong>Condition: </strong></td><td><div id="beachConditionBar" class="conditionsBar"><span id="beachCondition"></span></div></td></tr> ' +
+                                    '</table>' +
+                                  ' </div>');
+            $('.tab-content').append(sensorTabPane);
         }
 
     });
