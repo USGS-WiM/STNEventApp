@@ -147,103 +147,173 @@ require([
     //
     //});
 
-    on(map, "click", function (e) {
-        //alert("map clicked");
-        //var geometry = e.mapPoint.x + "," + e.mapPoint.y;
-        //var mapExtent = map.extent.xmin + "," + map.extent.ymin + "," + map.extent.xmax + "," + map.extent.ymax;
-        //var imageDisplay = (map.height + "," + map.width + "," + 96);
-
-        var identifyParams = new IdentifyParameters();
-        identifyParams.geometry = e.mapPoint;
-        identifyParams.layerIds = [0];
-        identifyParams.width = map.width;
-        identifyParams.height = map.height;
-        identifyParams.tolerance = 3;
-        identifyParams.mapExtent = map.extent;
-        //var layerDefinitions = [];
-        //layerDefinitions[0] = "EVENT_NAME = 'Sandy'";
-        //identifyParams.layerDefinitions = layerDefinitions;
-        idSensorArray = [];
-        idHwmArray = [];
-        idPeakArray = [];
-        idNwisArray = [];
-        var layerDefinitions = [];
 
 
-        for (var i = 0; i < identifyLayers.length; i++) {
+    //on(map, "click", function (e) {
+    //    //alert("map clicked");
+    //    //var geometry = e.mapPoint.x + "," + e.mapPoint.y;
+    //    //var mapExtent = map.extent.xmin + "," + map.extent.ymin + "," + map.extent.xmax + "," + map.extent.ymax;
+    //    //var imageDisplay = (map.height + "," + map.width + "," + 96);
+    //
+    //
+    //    var identifyParams = new IdentifyParameters();
+    //    identifyParams.geometry = e.mapPoint;
+    //    identifyParams.layerIds = [0];
+    //    identifyParams.width = map.width;
+    //    identifyParams.height = map.height;
+    //    identifyParams.tolerance = 3;
+    //    identifyParams.mapExtent = map.extent;
+    //    //var layerDefinitions = [];
+    //    //layerDefinitions[0] = "EVENT_NAME = 'Sandy'";
+    //    //identifyParams.layerDefinitions = layerDefinitions;
+    //    //idSensorArray = [];
+    //    //idHwmArray = [];
+    //    //idPeakArray = [];
+    //    //idNwisArray = [];
+    //    var layerDefinitions = [];
+    //
+    //    for (var i = 0; i < identifyLayers.length; i++) {
+    //
+    //        var serviceURL = identifyLayers[i].url;
+    //        var currentLayerID = identifyLayers[i].id;
+    //
+    //        if (map.getLayer(currentLayerID).visible == true ) {
+    //
+    //            var identify = new IdentifyTask(serviceURL);
+    //
+    //            if (currentLayerID != "nwis") {
+    //
+    //                layerDefinitions[0] = "EVENT_NAME = 'Sandy'";
+    //                identifyParams.layerDefinitions = layerDefinitions;
+    //
+    //                identify.execute(identifyParams, function (idResults) {
+    //
+    //
+    //                    for (var y = 0; y < idResults.length; y++) {
+    //                        //check for sensor in response
+    //                        if (idResults[0].feature.attributes.INSTRUMENT_ID != undefined) {
+    //                            //identifyResponseArray.push(idResults[i]);
+    //                            //idSensorArray.push.apply(idSensorArray, idResults);
+    //
+    //                                //$('.noSensorText').remove();
+    //
+    //                                var sensorType = idResults[y].layerName;
+    //                                var siteNo = idResults[y].feature.attributes.SITE_NO;
+    //                                var status = idResults[y].feature.attributes.STATUS;
+    //                                var city = idResults[y].feature.attributes.CITY;
+    //                                var county = idResults[y].feature.attributes.COUNTY;
+    //
+    //
+    //                                var sensorTabItem = $(
+    //                                '<table class="table table-hover">' +
+    //                                    '<tr><td><strong>Type: </strong></td><td><span id="siteNo">' + sensorType +'</span></td></tr> ' +
+    //                                    '<tr><td><strong>Site: </strong></td><td><span id="siteNo">' + siteNo +'</span></td></tr> ' +
+    //                                    '<tr><td><strong>Status: </strong></td><td><span class="status">' + status +'</span></td></tr> ' +
+    //                                    '<tr><td><strong>City: </strong></td><td><span id="city">' + city +'</span></td></tr> ' +
+    //                                    '<tr><td><strong>County: </strong></td><td><div id="beachConditionBar" class="conditionsBar"><span id="county">' + county +'</span></div></td></tr> ' +
+    //                                    '</table><hr>');
+    //                                $('#sensorTabPane').append(sensorTabItem);
+    //
+    //
+    //                        }
+    //                        if (idResults[0].feature.attributes.HWM_ID != undefined) {
+    //                            //identifyResponseArray.push(idResults[i]);
+    //                            idHwmArray.push.apply(idHwmArray, idResults);
+    //                        }
+    //                        if (idResults[0].feature.attributes.PEAK_SUMMARY_ID != undefined) {
+    //                            //identifyResponseArray.push(idResults[i]);
+    //                            idPeakArray.push.apply(idPeakArray, idResults);
+    //                        }
+    //
+    //                    }
+    //
+    //                });
+    //
+    //            } else {
+    //
+    //                identify.execute(identifyParams, function (idResults) {
+    //                    console.log("nwis feature being identified");
+    //
+    //                    for (var y = 0; y < idResults.length; y++) {
+    //                        if (idResults[0].feature.attributes.Name != undefined) {
+    //                            idNwisArray.push.apply(idNwisArray, idResults);
+    //                        }
+    //                    }
+    //                });
+    //
+    //            }
+    //
+    //
+    //        }
+    //
+    //    }
+    //
+    //    //show modal
+    //    $('#dataModal').modal('show');
+    //
+    //});
 
-            var serviceURL = identifyLayers[i].url;
-            var currentLayerID = identifyLayers[i].id;
+    //$('#dataModal').on('hidden.bs.modal', function (e) {
+    //    $('#sensorTabPane').empty();
+    //    var noSensorText = $('<label class="noSensorText">No sensors found. </label>');
+    //    $('#sensorTabPane').append(noSensorText);
+    //    $('#sensorTabPane').empty();
+    //
+    //    $('#hwmTabPane').empty();
+    //    $('#peaksTabPane').empty();
+    //});
 
-            if (map.getLayer(currentLayerID).visible == true ) {
-
-                var identify = new IdentifyTask(serviceURL);
-
-                if (currentLayerID != "nwis") {
-
-                    layerDefinitions[0] = "EVENT_NAME = 'Sandy'";
-                    identifyParams.layerDefinitions = layerDefinitions;
-
-                    identify.execute(identifyParams, function (idResults) {
-
-                        for (var y = 0; y < idResults.length; y++) {
-                            //check for sensor in response
-                            if (idResults[0].feature.attributes.INSTRUMENT_ID != undefined) {
-                                //identifyResponseArray.push(idResults[i]);
-                                idSensorArray.push.apply(idSensorArray, idResults);
-                            }
-                            if (idResults[0].feature.attributes.HWM_ID != undefined) {
-                                //identifyResponseArray.push(idResults[i]);
-                                idHwmArray.push.apply(idHwmArray, idResults);
-                            }
-                            if (idResults[0].feature.attributes.PEAK_SUMMARY_ID != undefined) {
-                                //identifyResponseArray.push(idResults[i]);
-                                idPeakArray.push.apply(idPeakArray, idResults);
-                            }
-
-                        }
-
-                    });
-
-                } else {
-                    layerDefinitions[0] = "" +
-                    "";
-                    identifyParams.layerDefinitions = layerDefinitions;
-
-                    identify.execute(identifyParams, function (idResults) {
-                        console.log("nwis feature being identified");
-
-                        for (var y = 0; y < idResults.length; y++) {
-                            if (idResults[0].feature.attributes.Name != undefined) {
-                                idNwisArray.push.apply(idNwisArray, idResults);
-                            }
-                        }
-                    });
-
-                }
-
-
-            }
-
-        }
-
-        ///do the creation of tabs, labels, data, etc based on response. then show modal when finished.
-
-        if (idSensorArray.length > 0) {
-            var sensorTab = $('<li role="presentation" class="active"><a href="#sensorTabPane" data-toggle="tab"><i class="fa fa-caret-square-o-right"></i>&nbsp;&nbsp;Sensors</a></li>');
-            $('#tabs').append(sensorTab);
-            var sensorTabPane = $('<div class="tab-pane active" id="sensorTabPane"></br>' +
-                                    '<table class="table table-hover">' +
-                                        '<tr><td><strong>Date: </strong></td><td><span id="conditionsDate"></span></td></tr> ' +
-                                        '<tr><td><strong>Beach Name: </strong></td><td><span class="beachName"></span></td></tr> ' +
-                                        '<tr><td><strong>Lake Temperature (&deg;F): </strong></td><td><span id="lakeTemp"></span></td></tr> ' +
-                                        '<tr><td><strong>Condition: </strong></td><td><div id="beachConditionBar" class="conditionsBar"><span id="beachCondition"></span></div></td></tr> ' +
-                                    '</table>' +
-                                  ' </div>');
-            $('.tab-content').append(sensorTabPane);
-        }
-
-    });
+    //function populateDataModal(idResults) {
+    //
+    //    ///do the creation of tabs, labels, data, etc based on response. then show modal when finished.
+    //
+    //
+    //    for (var y = 0; y < idResults.length; y++) {
+    //        //check for sensor in response
+    //        if (idResults[0].feature.attributes.INSTRUMENT_ID != undefined) {
+    //            //identifyResponseArray.push(idResults[i]);
+    //            idSensorArray.push.apply(idSensorArray, idResults);
+    //
+    //        }
+    //        if (idResults[0].feature.attributes.HWM_ID != undefined) {
+    //            //identifyResponseArray.push(idResults[i]);
+    //            idHwmArray.push.apply(idHwmArray, idResults);
+    //        }
+    //        if (idResults[0].feature.attributes.PEAK_SUMMARY_ID != undefined) {
+    //            //identifyResponseArray.push(idResults[i]);
+    //            idPeakArray.push.apply(idPeakArray, idResults);
+    //        }
+    //
+    //    }
+    //
+    //    if (idSensorArray.length > 0) {
+    //        var sensorTab = $('<li role="presentation" class="active"><a href="#sensorTabPane" data-toggle="tab"><i class="fa fa-caret-square-o-right"></i>&nbsp;&nbsp;Sensors</a></li>');
+    //        $('#tabs').append(sensorTab);
+    //
+    //        for (var i = 0; i < idSensorArray.length; i++) {
+    //
+    //            var siteNo = idSensorArray[i].feature.attributes.SITE_NO;
+    //            var status = idSensorArray[i].feature.attributes.STATUS;
+    //
+    //
+    //            var sensorTabPane = $('<div class="tab-pane active" id="sensorTabPane"></br>' +
+    //            '<table class="table table-hover">' +
+    //            '<tr><td><strong>Site: </strong></td><td><span id="siteNo">' + siteNo +'</span></td></tr> ' +
+    //            '<tr><td><strong>Beach Name: </strong></td><td><span class="beachName"></span></td></tr> ' +
+    //            '<tr><td><strong>Lake Temperature (&deg;F): </strong></td><td><span id="lakeTemp"></span></td></tr> ' +
+    //            '<tr><td><strong>Condition: </strong></td><td><div id="beachConditionBar" class="conditionsBar"><span id="beachCondition"></span></div></td></tr> ' +
+    //            '</table>' +
+    //            ' </div>');
+    //            $('.tab-content').append(sensorTabPane);
+    //
+    //
+    //        }
+    //
+    //
+    //
+    //    }
+    //
+    //}
 
     var nationalMapBasemap = new ArcGISTiledMapServiceLayer('http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer');
     //on clicks to swap basemap. map.removeLayer is required for nat'l map b/c it is not technically a basemap, but a tiled layer.
@@ -502,12 +572,44 @@ require([
 
                 if (layerDetails.wimOptions.layerType === 'agisFeature') {
                     var layer = new FeatureLayer(layerDetails.url, layerDetails.options);
+                    ///may not need
+                    if (layerDetails.wimOptions.identifiable == true){
+                        identifyLayers.push({id:layerDetails.options.id, url: layerDetails.url})
+                    }
+
                     //check if include in legend is true
                     if (layerDetails.wimOptions && layerDetails.wimOptions.includeLegend == true){
                         legendLayers.push({layer:layer, title: layerName});
                     }
                     addLayer(group.groupHeading, group.showGroupHeading, layer, layerName, exclusiveGroupName, layerDetails.options, layerDetails.wimOptions);
                     //addMapServerLegend(layerName, layerDetails);
+
+                    on(layer, "click", function (evt) {
+
+                        if (evt.graphic.attributes.INSTRUMENT_ID != undefined) {
+                            $('#city').html(evt.graphic.attributes.CITY);
+                            $('#county').html(evt.graphic.attributes.COUNTY);
+                            $('#state').html(evt.graphic.attributes.STATE);
+                            $('#siteName').html(evt.graphic.attributes.SITE_NAME);
+                            $('#status').html(evt.graphic.attributes.STATUS);
+
+                            $('#sensorModal').modal('show');
+                            $('#sensorTab').tab('show')
+                        }
+
+                        if (evt.graphic.attributes.HWM_ID != undefined) {
+
+                        }
+
+                        if (evt.graphic.attributes.PEAK_SUMMARY_ID != undefined) {
+
+                        }
+
+
+
+                    });
+
+
                 }
 
                 else if (layerDetails.wimOptions.layerType === 'agisWMS') {
