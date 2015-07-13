@@ -106,7 +106,37 @@
 </div>
 
 
-<div id="dataModal" class="modal fade"  tabindex="-1" role="dialog">
+<!--<div id="dataModal" class="modal fade"  tabindex="-1" role="dialog">-->
+    <!--<div class="modal-dialog modal-lg">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<button class="close" type="button" data-dismiss="modal" aria-hidden="true" style="color:gray;">&times;</button>-->
+                <!--<h4 class="modal-title"> Data</h4>-->
+            <!--</div>-->
+            <!--<div id="popupModal" class="modal-body">-->
+                <!--<ul class="nav nav-tabs" id="tabs">-->
+                    <!--<li role="presentation" class="active"><a href="#sensorTabPane" data-toggle="tab"><i class="fa fa-caret-square-o-right"></i>&nbsp;&nbsp;Sensors</a></li>-->
+                    <!--<li role="presentation"><a href="#hwmTabPane" data-toggle="tab"><i class="fa fa-calendar"></i>&nbsp;&nbsp;High-Water Marks</a></li>-->
+                    <!--<li role="presentation"><a href="#peaksTabPane" data-toggle="tab"><i class="fa fa-calendar"></i>&nbsp;&nbsp;Peaks</a></li>-->
+                <!--</ul>-->
+                <!--<div class="tab-content">-->
+                    <!--<div role="tabpanel" class="tab-pane" id="sensorTabPane"></br>-->
+                        <!--Sensors  go here-->
+                    <!--</div>-->
+                    <!--<div role="tabpanel" class="tab-pane" id="hwmTabPane"></br>-->
+                        <!--HWMS  go here-->
+                    <!--</div>-->
+                    <!--<div role="tabpanel" class="tab-pane" id="peaksTabPane"></br>-->
+                       <!--Peaks go here-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
+    <!--</div>&lt;!&ndash; /.modal-dialog &ndash;&gt;-->
+<!--</div>&lt;!&ndash; /.modal &ndash;&gt;-->
+
+
+<div id="sensorModal" class="modal fade"  tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -115,26 +145,23 @@
             </div>
             <div id="popupModal" class="modal-body">
                 <ul class="nav nav-tabs" id="tabs">
-                    <li role="presentation" class="active"><a href="#sensorTabPane" data-toggle="tab"><i class="fa fa-caret-square-o-right"></i>&nbsp;&nbsp;Sensors</a></li>
-                    <li role="presentation"><a href="#tab2" data-toggle="tab"><i class="fa fa-calendar"></i>&nbsp;&nbsp;High-Water Marks</a></li>
-                    <li role="presentation"><a href="#tab3" data-toggle="tab"><i class="fa fa-calendar"></i>&nbsp;&nbsp;Peaks</a></li>
+                    <li role="presentation"><a id="sensorTab" href="#sensorTabPane" data-toggle="tab"><i class="fa fa-caret-square-o-right"></i>&nbsp;&nbsp;Sensors</a></li>
+                    <li role="presentation"><a id="peaksTab" href="#peaksTabPane" data-toggle="tab"><i class="fa fa-calendar"></i>&nbsp;&nbsp;High-Water Marks</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="sensorTabPane"></br>
+                    <div role="tabpanel" class="tab-pane" id="sensorTabPane"></br>
                         <table class="table table-hover">
-                            <tr><td><strong>Date: </strong></td><td><span id="conditionsDate"></span></td></tr>
-                            <tr><td><strong>Beach Name: </strong></td><td><span class="beachName"></span></td></tr>
-                            <tr><td><strong>Lake Temperature (&deg;F): </strong></td><td><span id="lakeTemp"></span></td></tr>
-                            <tr><td><strong>Condition: </strong></td><td><div id="beachConditionBar" class="conditionsBar"><span id="beachCondition"></span></div></td></tr>
+                            <tr><td><strong>City: </strong></td><td><span id="city"></span></td></tr>
+                            <tr><td><strong>County: </strong></td><td><span id="county"></span></td></tr>
+                            <tr><td><strong>State: </strong></td><td><span id="state"></span></td></tr>
+                            <tr><td><strong>STN Site Name: </strong></td><td><span id="siteName"></span></td></tr>
+                            <tr><td><strong>Status: </strong></td><td><span id="status"></span></td></tr>
                         </table>
                     </div>
-                    <div class="tab-pane" id="tab2"></br>
-                        <table id="recentConditionsTable" class="table table-condensed table-striped table-hover">
-                        </table>
+                    <div role="tabpanel" class="tab-pane" id="peaksTabPane"></br>
+                        Peaks go here
                     </div>
-                    <div class="tab-pane" id="tab3"></br>
-                       Peaks go here
-                    </div>
+
                 </div>
             </div>
         </div><!-- /.modal-content -->

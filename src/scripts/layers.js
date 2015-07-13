@@ -22,32 +22,36 @@ require([
             "includeInLayerList": true,
             "layers": {
                 "Barometric": {
-                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/Barometric/MapServer",
+                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/Barometric/MapServer/0",
                     "options": {
                         "id": "baro",
                         "opacity": 0.85,
                         "visible": true,
-                        "layerDefinitions": "EVENT_NAME = '" + eventName + "'"
+                        "mode": FeatureLayer.MODE_SNAPSHOT,
+                        "outFields": ["*"],
+                        "definitionExpression": "EVENT_NAME = '" + eventName + "'"
                     },
                     "wimOptions": {
                         "type": "layer",
-                        "layerType": "agisDynamic",
+                        "layerType": "agisFeature",
                         "includeInLayerList": true,
                         "includeLegend" : true,
                         "identifiable" :true
                     }
                 },
                 "Meteorological": {
-                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/Meteorological/MapServer",
+                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/Meteorological/MapServer/0",
                     "options": {
                         "id": "met",
                         "opacity": 0.85,
                         "visible": true,
-                        "layerDefinitions": "EVENT_NAME = '" + eventName + "'"
+                        "mode": FeatureLayer.MODE_SNAPSHOT,
+                        "outFields": ["*"],
+                        "definitionExpression": "EVENT_NAME = '" + eventName + "'"
                     },
                     "wimOptions": {
                         "type": "layer",
-                        "layerType": "agisDynamic",
+                        "layerType": "agisFeature",
                         "includeInLayerList": true,
                         "hasOpacitySlider": true,
                         "includeLegend" : true,
@@ -55,16 +59,18 @@ require([
                     }
                 },
                 "Rapid Deploy Gage": {
-                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/RapidDeployGage/MapServer",
+                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/RapidDeployGage/MapServer/0",
                     "options": {
                         "id": "rdg",
                         "opacity": 0.85,
                         "visible": true,
-                        "layerDefinitions": "EVENT_NAME = '" + eventName + "'"
+                        "mode": FeatureLayer.MODE_SNAPSHOT,
+                        "outFields": ["*"],
+                        "definitionExpression": "EVENT_NAME = '" + eventName + "'"
                     },
                     "wimOptions": {
                         "type": "layer",
-                        "layerType": "agisDynamic",
+                        "layerType": "agisFeature",
                         "includeInLayerList": true,
                         "hasOpacitySlider": true,
                         "includeLegend" : true,
@@ -72,16 +78,18 @@ require([
                     }
                 },
                 "Storm Tide": {
-                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/StormTide/MapServer",
+                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/StormTide/MapServer/0",
                     "options": {
                         "id": "stormTide",
                         "opacity": 0.85,
                         "visible": true,
-                        "layerDefinitions": "EVENT_NAME = '" + eventName + "'"
+                        "mode": FeatureLayer.MODE_SNAPSHOT,
+                        "outFields": ["*"],
+                        "definitionExpression": "EVENT_NAME = '" + eventName + "'"
                     },
                     "wimOptions": {
                         "type": "layer",
-                        "layerType": "agisDynamic",
+                        "layerType": "agisFeature",
                         "includeInLayerList": true,
                         "hasOpacitySlider": true,
                         "includeLegend" : true,
@@ -89,16 +97,18 @@ require([
                     }
                 },
                 "Wave Height": {
-                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/WaveHeight/MapServer",
+                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/WaveHeight/MapServer/0",
                     "options": {
                         "id": "waveHeight",
                         "opacity": 0.85,
                         "visible": true,
-                        "layerDefinitions": "EVENT_NAME = '" + eventName + "'"
+                        "mode": FeatureLayer.MODE_SNAPSHOT,
+                        "outFields": ["*"],
+                        "definitionExpression": "EVENT_NAME = '" + eventName + "'"
                     },
                     "wimOptions": {
                         "type": "layer",
-                        "layerType": "agisDynamic",
+                        "layerType": "agisFeature",
                         "includeInLayerList": true,
                         "hasOpacitySlider": true,
                         "includeLegend" : true,
@@ -113,32 +123,36 @@ require([
             "includeInLayerList": true,
             "layers": {
                 "Peaks" : {
-                    "url": "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/Peaks/MapServer",
+                    "url": "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/Peaks/MapServer/0",
                     "options": {
                         "id": "peaks",
                         "opacity": 0.85,
                         "visible": false,
-                        "layerDefinitions": "EVENT_NAME = '" + eventName + "'"
+                        "mode": FeatureLayer.MODE_SNAPSHOT,
+                        "outFields": ["*"],
+                        "definitionExpression": "EVENT_NAME = '" + eventName + "'"
                     },
                     "wimOptions": {
                         "type": "layer",
-                        "layerType": "agisDynamic",
+                        "layerType": "agisFeature",
                         "includeInLayerList": false,
                         "includeLegend" : true,
                         "identifiable" :true
                     }
                 },
                 "High-water Marks" : {
-                    "url": "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/HWMs/MapServer",
+                    "url": "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/HWMs/MapServer/0",
                     "options": {
                         "id": "hwms",
                         "opacity": 0.85,
                         "visible": false,
-                        "layerDefinitions": "EVENT_NAME = '" + eventName + "'"
+                        "mode": FeatureLayer.MODE_SNAPSHOT,
+                        "outFields": ["*"],
+                        "definitionExpression": "EVENT_NAME = '" + eventName + "'"
                     },
                     "wimOptions": {
                         "type": "layer",
-                        "layerType": "agisDynamic",
+                        "layerType": "agisFeature",
                         "includeInLayerList": true,
                         "includeLegend" : true,
                         "identifiable" :true
