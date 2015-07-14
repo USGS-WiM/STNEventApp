@@ -26,8 +26,6 @@ require([
     'esri/geometry/Multipoint',
     'esri/symbols/PictureMarkerSymbol',
     "esri/geometry/webMercatorUtils",
-    "esri/tasks/IdentifyTask",
-    "esri/tasks/IdentifyParameters",
     'dojo/dom',
     'dojo/on',
     'dojo/domReady!'
@@ -41,8 +39,6 @@ require([
     Multipoint,
     PictureMarkerSymbol,
     webMercatorUtils,
-    IdentifyTask,
-    IdentifyParameters,
     dom,
     on
 ) {
@@ -105,215 +101,6 @@ require([
         $('#latitude').html(geographicMapCenter.y.toFixed(3));
         $('#longitude').html(geographicMapCenter.x.toFixed(3));
     });
-
-
-    //on(map, "click", function (e) {
-    //    //alert("map clicked");
-    //    var geometry = e.mapPoint.x + "," + e.mapPoint.y;
-    //    var mapExtent = map.extent.xmin + "," + map.extent.ymin + "," + map.extent.xmax + "," + map.extent.ymax;
-    //    var imageDisplay = (map.height + "," + map.width + "," + 96);
-    //
-    //
-    //    for (var i = 0; i < identifyLayers.length; i++) {
-    //
-    //        var serviceURL = identifyLayers[i].url;
-    //        var currentLayerID = identifyLayers[i].id;
-    //
-    //        //if (identifyLayers[i].url == 'nwis' ||identifyLayers[i].url == 'hwms' ||identifyLayers[i].url == 'peaks'  ){
-    //        //    alert("not a sensor")
-    //        //}
-    //        $.ajax({
-    //            dataType: 'json',
-    //            type: 'GET',
-    //            url: serviceURL + '/identify?f=json&geometry=' + geometry + '&tolerance=2&mapExtent=' + mapExtent + '&layerDefs=0%3AEVENT_NAME%3D%27Sandy%27' + '&imageDisplay=' + imageDisplay,
-    //            headers: {'Accept': '*/*'},
-    //            success: function (data) {
-    //
-    //                console.log("successful ajax response")
-    //
-    //                if (data.results.length > 0) {
-    //                    //alert("Clicked on a Sensor feature. SITE_NO =" + data.results[0].attributes.SITE_NO +" and Status=" + data.results[0].attributes.STATUS );
-    //                    identifyResponseArray.push({id:currentLayerID, data: data});
-    //                    //console.log("layer: " + currentLayerID + " results:" + data.results);
-    //                }
-    //
-    //            },
-    //            error: function (error) {
-    //                console.log("Error processing the JSON. The error is:" + error);
-    //            }
-    //        });
-    //    }
-    //    console.log(identifyResponseArray);
-    //
-    //});
-
-
-
-    //on(map, "click", function (e) {
-    //    //alert("map clicked");
-    //    //var geometry = e.mapPoint.x + "," + e.mapPoint.y;
-    //    //var mapExtent = map.extent.xmin + "," + map.extent.ymin + "," + map.extent.xmax + "," + map.extent.ymax;
-    //    //var imageDisplay = (map.height + "," + map.width + "," + 96);
-    //
-    //
-    //    var identifyParams = new IdentifyParameters();
-    //    identifyParams.geometry = e.mapPoint;
-    //    identifyParams.layerIds = [0];
-    //    identifyParams.width = map.width;
-    //    identifyParams.height = map.height;
-    //    identifyParams.tolerance = 3;
-    //    identifyParams.mapExtent = map.extent;
-    //    //var layerDefinitions = [];
-    //    //layerDefinitions[0] = "EVENT_NAME = 'Sandy'";
-    //    //identifyParams.layerDefinitions = layerDefinitions;
-    //    //idSensorArray = [];
-    //    //idHwmArray = [];
-    //    //idPeakArray = [];
-    //    //idNwisArray = [];
-    //    var layerDefinitions = [];
-    //
-    //    for (var i = 0; i < identifyLayers.length; i++) {
-    //
-    //        var serviceURL = identifyLayers[i].url;
-    //        var currentLayerID = identifyLayers[i].id;
-    //
-    //        if (map.getLayer(currentLayerID).visible == true ) {
-    //
-    //            var identify = new IdentifyTask(serviceURL);
-    //
-    //            if (currentLayerID != "nwis") {
-    //
-    //                layerDefinitions[0] = "EVENT_NAME = 'Sandy'";
-    //                identifyParams.layerDefinitions = layerDefinitions;
-    //
-    //                identify.execute(identifyParams, function (idResults) {
-    //
-    //
-    //                    for (var y = 0; y < idResults.length; y++) {
-    //                        //check for sensor in response
-    //                        if (idResults[0].feature.attributes.INSTRUMENT_ID != undefined) {
-    //                            //identifyResponseArray.push(idResults[i]);
-    //                            //idSensorArray.push.apply(idSensorArray, idResults);
-    //
-    //                                //$('.noSensorText').remove();
-    //
-    //                                var sensorType = idResults[y].layerName;
-    //                                var siteNo = idResults[y].feature.attributes.SITE_NO;
-    //                                var status = idResults[y].feature.attributes.STATUS;
-    //                                var city = idResults[y].feature.attributes.CITY;
-    //                                var county = idResults[y].feature.attributes.COUNTY;
-    //
-    //
-    //                                var sensorTabItem = $(
-    //                                '<table class="table table-hover">' +
-    //                                    '<tr><td><strong>Type: </strong></td><td><span id="siteNo">' + sensorType +'</span></td></tr> ' +
-    //                                    '<tr><td><strong>Site: </strong></td><td><span id="siteNo">' + siteNo +'</span></td></tr> ' +
-    //                                    '<tr><td><strong>Status: </strong></td><td><span class="status">' + status +'</span></td></tr> ' +
-    //                                    '<tr><td><strong>City: </strong></td><td><span id="city">' + city +'</span></td></tr> ' +
-    //                                    '<tr><td><strong>County: </strong></td><td><div id="beachConditionBar" class="conditionsBar"><span id="county">' + county +'</span></div></td></tr> ' +
-    //                                    '</table><hr>');
-    //                                $('#sensorTabPane').append(sensorTabItem);
-    //
-    //
-    //                        }
-    //                        if (idResults[0].feature.attributes.HWM_ID != undefined) {
-    //                            //identifyResponseArray.push(idResults[i]);
-    //                            idHwmArray.push.apply(idHwmArray, idResults);
-    //                        }
-    //                        if (idResults[0].feature.attributes.PEAK_SUMMARY_ID != undefined) {
-    //                            //identifyResponseArray.push(idResults[i]);
-    //                            idPeakArray.push.apply(idPeakArray, idResults);
-    //                        }
-    //
-    //                    }
-    //
-    //                });
-    //
-    //            } else {
-    //
-    //                identify.execute(identifyParams, function (idResults) {
-    //                    console.log("nwis feature being identified");
-    //
-    //                    for (var y = 0; y < idResults.length; y++) {
-    //                        if (idResults[0].feature.attributes.Name != undefined) {
-    //                            idNwisArray.push.apply(idNwisArray, idResults);
-    //                        }
-    //                    }
-    //                });
-    //
-    //            }
-    //
-    //
-    //        }
-    //
-    //    }
-    //
-    //    //show modal
-    //    $('#dataModal').modal('show');
-    //
-    //});
-
-    //$('#dataModal').on('hidden.bs.modal', function (e) {
-    //    $('#sensorTabPane').empty();
-    //    var noSensorText = $('<label class="noSensorText">No sensors found. </label>');
-    //    $('#sensorTabPane').append(noSensorText);
-    //    $('#sensorTabPane').empty();
-    //
-    //    $('#hwmTabPane').empty();
-    //    $('#peaksTabPane').empty();
-    //});
-
-    //function populateDataModal(idResults) {
-    //
-    //    ///do the creation of tabs, labels, data, etc based on response. then show modal when finished.
-    //
-    //
-    //    for (var y = 0; y < idResults.length; y++) {
-    //        //check for sensor in response
-    //        if (idResults[0].feature.attributes.INSTRUMENT_ID != undefined) {
-    //            //identifyResponseArray.push(idResults[i]);
-    //            idSensorArray.push.apply(idSensorArray, idResults);
-    //
-    //        }
-    //        if (idResults[0].feature.attributes.HWM_ID != undefined) {
-    //            //identifyResponseArray.push(idResults[i]);
-    //            idHwmArray.push.apply(idHwmArray, idResults);
-    //        }
-    //        if (idResults[0].feature.attributes.PEAK_SUMMARY_ID != undefined) {
-    //            //identifyResponseArray.push(idResults[i]);
-    //            idPeakArray.push.apply(idPeakArray, idResults);
-    //        }
-    //
-    //    }
-    //
-    //    if (idSensorArray.length > 0) {
-    //        var sensorTab = $('<li role="presentation" class="active"><a href="#sensorTabPane" data-toggle="tab"><i class="fa fa-caret-square-o-right"></i>&nbsp;&nbsp;Sensors</a></li>');
-    //        $('#tabs').append(sensorTab);
-    //
-    //        for (var i = 0; i < idSensorArray.length; i++) {
-    //
-    //            var siteNo = idSensorArray[i].feature.attributes.SITE_NO;
-    //            var status = idSensorArray[i].feature.attributes.STATUS;
-    //
-    //
-    //            var sensorTabPane = $('<div class="tab-pane active" id="sensorTabPane"></br>' +
-    //            '<table class="table table-hover">' +
-    //            '<tr><td><strong>Site: </strong></td><td><span id="siteNo">' + siteNo +'</span></td></tr> ' +
-    //            '<tr><td><strong>Beach Name: </strong></td><td><span class="beachName"></span></td></tr> ' +
-    //            '<tr><td><strong>Lake Temperature (&deg;F): </strong></td><td><span id="lakeTemp"></span></td></tr> ' +
-    //            '<tr><td><strong>Condition: </strong></td><td><div id="beachConditionBar" class="conditionsBar"><span id="beachCondition"></span></div></td></tr> ' +
-    //            '</table>' +
-    //            ' </div>');
-    //            $('.tab-content').append(sensorTabPane);
-    //
-    //
-    //        }
-    //
-    //
-    //
-    //    }
-    //
-    //}
 
     var nationalMapBasemap = new ArcGISTiledMapServiceLayer('http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer');
     //on clicks to swap basemap. map.removeLayer is required for nat'l map b/c it is not technically a basemap, but a tiled layer.
@@ -553,16 +340,12 @@ require([
         //create global layers lookup
         var mapLayers = [];
 
-        //var radar = new ArcGISDynamicMapServiceLayer("http://gis.srh.noaa.gov/arcgis/rest/services/RIDGERadar/MapServer");
-        //map.addLayer(radar);
-
         $.each(allLayers, function (index,group) {
             console.log('processing: ', group.groupHeading)
 
 
             //sub-loop over layers within this groupType
             $.each(group.layers, function (layerName,layerDetails) {
-
 
                 //check for exclusiveGroup for this layer
                 var exclusiveGroupName = '';
@@ -572,11 +355,6 @@ require([
 
                 if (layerDetails.wimOptions.layerType === 'agisFeature') {
                     var layer = new FeatureLayer(layerDetails.url, layerDetails.options);
-                    ///may not need
-                    if (layerDetails.wimOptions.identifiable == true){
-                        identifyLayers.push({id:layerDetails.options.id, url: layerDetails.url})
-                    }
-
                     //check if include in legend is true
                     if (layerDetails.wimOptions && layerDetails.wimOptions.includeLegend == true){
                         legendLayers.push({layer:layer, title: layerName});
@@ -587,29 +365,64 @@ require([
                     on(layer, "click", function (evt) {
 
                         if (evt.graphic.attributes.INSTRUMENT_ID != undefined) {
+                            $('#sensorEvent').html(evt.graphic.attributes.EVENT_NAME);
                             $('#city').html(evt.graphic.attributes.CITY);
                             $('#county').html(evt.graphic.attributes.COUNTY);
                             $('#state').html(evt.graphic.attributes.STATE);
                             $('#siteName').html(evt.graphic.attributes.SITE_NAME);
                             $('#status').html(evt.graphic.attributes.STATUS);
 
+                            $('#sensorDataLink').html('<a target="_blank" href="http://' + stnDomain + '/STNWeb/Public/SensorInfoPage?siteId=' + evt.graphic.attributes.SITE_ID +'&sensorId=' + evt.graphic.attributes.INSTRUMENT_ID +'">Sensor&nbsp;' + evt.graphic.attributes.INSTRUMENT_ID + '</a>');
+
+                            var layerId = evt.currentTarget.id.replace('_layer', '');
+                            var layerName = map.getLayer(layerId).name;
+                            $('.sensorTypeTitle').html(layerName +'&nbsp'+ evt.graphic.attributes.INSTRUMENT_ID);
+
+                            //update peak conditions table with a fresh header row
+                            $('#peaksTable').html('<tr><th>Peak Stage (ft)</th><th>Peak Date & Time</th><th>Datum</th></tr>');
+
+                            var geometry = evt.mapPoint.x + "," + evt.mapPoint.y;
+                            var mapExtent = map.extent.xmin + "," + map.extent.ymin + "," + map.extent.xmax + "," + map.extent.ymax;
+                            var imageDisplay = (map.height + "," + map.width + "," + 96);
+                            var peaksServiceURL = mapServicesRoot + "/Peaks/MapServer";
+                            $.ajax({
+                                dataType: 'json',
+                                type: 'GET',
+                                url: peaksServiceURL + '/identify?f=json&geometry=' + geometry + '&tolerance=3&mapExtent=' + mapExtent + '&layerDefs=0%3AEVENT_NAME%3D%27' + eventName + '%27' + '&imageDisplay=' + imageDisplay,
+                                headers: {'Accept': '*/*'},
+                                success: function (data) {
+                                    if (data.results.length > 0) {
+                                        for (var i = 0; i < data.results.length; i++) {
+                                            var attributes = data.results[i].attributes;
+                                            //append each peak result as a new table row
+                                            $('#peaksTable').append('<tr><td>' + attributes.PEAK_STAGE + '</td><td>' + attributes.PEAK_DATE + '</td><td>' + attributes.DATUM_NAME + '</td></tr>');
+                                        }
+                                    } else {
+                                        $('#peaksTable').html('No peaks associated with this location');
+                                    }
+                                },
+                                error: function (error) {
+                                    console.log("Error processing the peaks JSON response. The error is:" + error);
+                                    $('#peaksTable').html('An error occurred retrieving peaks data. Please try again. ');
+                                }
+                            });
                             $('#sensorModal').modal('show');
                             $('#sensorTab').tab('show')
                         }
-
                         if (evt.graphic.attributes.HWM_ID != undefined) {
-
+                            $('#hwmEvent').html(evt.graphic.attributes.EVENT_NAME);
+                            $('#hwmElev').html(evt.graphic.attributes.ELEV_FT);
+                            $('#hwmWaterbody').html(evt.graphic.attributes.WATERBODY);
+                            $('#hwmCounty').html(evt.graphic.attributes.COUNTY);
+                            $('#hwmState').html(evt.graphic.attributes.STATE);
+                            $('#hwmID').html(evt.graphic.attributes.HWM_ID);
+                            $('#hwmSiteName').html(evt.graphic.attributes.SITE_NAME);
+                            $('#hwmDescription').html(evt.graphic.attributes.HWM_LOCATIONDESCRIPTION);
+                            $('#hwmType').html(evt.graphic.attributes.HWM_TYPE);
+                            $('#hwmDataLink').html('<a target="_blank" href="http://' + stnDomain + '/STNWeb/Public/HWMInfoPage?siteId=' + evt.graphic.attributes.SITE_ID +'&hwmId=' + evt.graphic.attributes.HWM_ID +'">HWM&nbsp;' + evt.graphic.attributes.HWM_ID + '</a>');
+                            $('#hwmModal').modal('show');
                         }
-
-                        if (evt.graphic.attributes.PEAK_SUMMARY_ID != undefined) {
-
-                        }
-
-
-
                     });
-
-
                 }
 
                 else if (layerDetails.wimOptions.layerType === 'agisWMS') {
@@ -826,7 +639,6 @@ require([
                     }
                 }
             }
-
             else {
                 //otherwise append
                 $('#toggle').append(button);
@@ -947,21 +759,6 @@ require([
         }, "legendDiv");
         legend.startup();
 
-
-
     });//end of require statement containing legend building code
-
-
-});
-
-$(document).ready(function () {
-    //7 lines below are handler for the legend buttons. to be removed if we stick with the in-map legend toggle
-    //$('#legendButtonNavBar, #legendButtonSidebar').on('click', function () {
-    //    $('#legend').toggle();
-    //    //return false;
-    //});
-    //$('#legendClose').on('click', function () {
-    //    $('#legend').hide();
-    //});
 
 });
