@@ -165,6 +165,9 @@ body {
     min-height: 100%;
     max-height: 100%;
 }
+/*.modal-header{*/
+    /*background-color: #f5f5f5;*/
+/*}*/
 
 .opacitySlider {
     position: absolute;
@@ -215,6 +218,10 @@ body {
     color: #333;
     background-color: #c4c4c4;
     border-color: #ddd;
+}
+
+#peaksTabPane {
+    overflow-y: auto;
 }
 
 .row-map {

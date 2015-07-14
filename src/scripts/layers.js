@@ -3,6 +3,8 @@
  */
 var allLayers;
 var eventName = "Sandy";
+var mapServicesRoot = "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN";
+var stnDomain = "stn.wim.usgs.gov";
 
 require([
     "esri/geometry/Extent",
@@ -22,7 +24,7 @@ require([
             "includeInLayerList": true,
             "layers": {
                 "Barometric": {
-                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/Barometric/MapServer/0",
+                    "url" : mapServicesRoot + "/Barometric/MapServer/0",
                     "options": {
                         "id": "baro",
                         "opacity": 0.85,
@@ -40,7 +42,7 @@ require([
                     }
                 },
                 "Meteorological": {
-                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/Meteorological/MapServer/0",
+                    "url" : mapServicesRoot + "/Meteorological/MapServer/0",
                     "options": {
                         "id": "met",
                         "opacity": 0.85,
@@ -59,7 +61,7 @@ require([
                     }
                 },
                 "Rapid Deploy Gage": {
-                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/RapidDeployGage/MapServer/0",
+                    "url" : mapServicesRoot + "/RapidDeployGage/MapServer/0",
                     "options": {
                         "id": "rdg",
                         "opacity": 0.85,
@@ -78,7 +80,7 @@ require([
                     }
                 },
                 "Storm Tide": {
-                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/StormTide/MapServer/0",
+                    "url" : mapServicesRoot + "/StormTide/MapServer/0",
                     "options": {
                         "id": "stormTide",
                         "opacity": 0.85,
@@ -97,7 +99,7 @@ require([
                     }
                 },
                 "Wave Height": {
-                    "url" : "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/WaveHeight/MapServer/0",
+                    "url" : mapServicesRoot + "/WaveHeight/MapServer/0",
                     "options": {
                         "id": "waveHeight",
                         "opacity": 0.85,
@@ -122,26 +124,8 @@ require([
             "showGroupHeading": true,
             "includeInLayerList": true,
             "layers": {
-                "Peaks" : {
-                    "url": "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/Peaks/MapServer/0",
-                    "options": {
-                        "id": "peaks",
-                        "opacity": 0.85,
-                        "visible": false,
-                        "mode": FeatureLayer.MODE_SNAPSHOT,
-                        "outFields": ["*"],
-                        "definitionExpression": "EVENT_NAME = '" + eventName + "'"
-                    },
-                    "wimOptions": {
-                        "type": "layer",
-                        "layerType": "agisFeature",
-                        "includeInLayerList": false,
-                        "includeLegend" : true,
-                        "identifiable" :true
-                    }
-                },
                 "High-water Marks" : {
-                    "url": "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/HWMs/MapServer/0",
+                    "url": mapServicesRoot + "/HWMs/MapServer/0",
                     "options": {
                         "id": "hwms",
                         "opacity": 0.85,
@@ -159,7 +143,7 @@ require([
                     }
                 },
                 "USGS NWIS Gages" : {
-                    "url": "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN/STN_nwis_rt/MapServer",
+                    "url": mapServicesRoot + "/STN_nwis_rt/MapServer",
                     "options": {
                         "id": "nwis",
                         "opacity": 0.90,
