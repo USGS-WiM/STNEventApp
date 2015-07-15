@@ -11,10 +11,6 @@ var allLayers;
 var maxLegendHeight;
 var maxLegendDivHeight;
 var identifyLayers = [];
-var idSensorArray = [];
-var idHwmArray = [];
-var idPeakArray = [];
-var idNwisArray = [];
 
 require([
     'esri/map',
@@ -42,10 +38,6 @@ require([
     dom,
     on
 ) {
-
-    //bring this line back after experiment////////////////////////////
-    //allLayers = mapLayers;
-
     map = Map('mapDiv', {
         basemap: 'gray',
         center: [-95.6, 38.6],
@@ -102,43 +94,43 @@ require([
         $('#longitude').html(geographicMapCenter.x.toFixed(3));
     });
 
-    var nationalMapBasemap = new ArcGISTiledMapServiceLayer('http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer');
-    //on clicks to swap basemap. map.removeLayer is required for nat'l map b/c it is not technically a basemap, but a tiled layer.
+    var nationalMapBasemap = new ArcGISTiledMapServiceLayer('http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer', {visible: false});
+    map.addLayer(nationalMapBasemap);
+    //on clicks to swap basemap. visibility toggling is required for nat'l map b/c it is not technically a basemap, but a tiled layer.
     on(dom.byId('btnStreets'), 'click', function () {
         map.setBasemap('streets');
-        map.removeLayer(nationalMapBasemap);
+        nationalMapBasemap.setVisibility(false);
     });
     on(dom.byId('btnSatellite'), 'click', function () {
         map.setBasemap('satellite');
-        map.removeLayer(nationalMapBasemap);
+        nationalMapBasemap.setVisibility(false);
     });
     on(dom.byId('btnHybrid'), 'click', function () {
         map.setBasemap('hybrid');
-        map.removeLayer(nationalMapBasemap);
+        nationalMapBasemap.setVisibility(false);
     });
     on(dom.byId('btnTerrain'), 'click', function () {
         map.setBasemap('terrain');
-        map.removeLayer(nationalMapBasemap);
+        nationalMapBasemap.setVisibility(false);
     });
     on(dom.byId('btnGray'), 'click', function () {
         map.setBasemap('gray');
-        map.removeLayer(nationalMapBasemap);
+        nationalMapBasemap.setVisibility(false);
     });
     on(dom.byId('btnNatGeo'), 'click', function () {
         map.setBasemap('national-geographic');
-        map.removeLayer(nationalMapBasemap);
+        nationalMapBasemap.setVisibility(false);
     });
     on(dom.byId('btnOSM'), 'click', function () {
         map.setBasemap('osm');
-        map.removeLayer(nationalMapBasemap);
+        nationalMapBasemap.setVisibility(false);
     });
     on(dom.byId('btnTopo'), 'click', function () {
         map.setBasemap('topo');
-        map.removeLayer(nationalMapBasemap);
+        nationalMapBasemap.setVisibility(false);
     });
-
     on(dom.byId('btnNatlMap'), 'click', function () {
-        map.addLayer(nationalMapBasemap);
+        nationalMapBasemap.setVisibility(true);
     });
 
     var geocoder = new Geocoder({
@@ -193,7 +185,8 @@ require([
         g.setSymbol(sym);
         addPlaceGraphic(item.result,g.symbol);
         // Close modal
-        $('#geosearchModal').modal('hide');
+        //below is line that hides modal after selection in input
+        //$('#geosearchModal').modal('hide');
     }
     function geocodeResults(places) {
         places = places.results;
@@ -255,6 +248,12 @@ require([
     }
     // Show modal dialog; handle legend sizing (both on doc ready)
     $(document).ready(function(){
+
+        $('.eventType').html(eventType + '&nbsp;');
+        $('.eventName').html(eventName);
+        $('#disclaimerModal').modal({backdrop: 'static'});
+        $('#disclaimerModal').modal('show');
+
         function showModal() {
             $('#geosearchModal').modal('show');
         }
@@ -342,7 +341,6 @@ require([
 
         $.each(allLayers, function (index,group) {
             console.log('processing: ', group.groupHeading)
-
 
             //sub-loop over layers within this groupType
             $.each(group.layers, function (layerName,layerDetails) {
