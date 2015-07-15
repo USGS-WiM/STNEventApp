@@ -2,7 +2,10 @@
  * Created by bdraper on 4/27/2015.
  */
 var allLayers;
+//IMPORTANT: replace eventName variable below with desired event name from STN Event
 var eventName = "Sandy";
+//replace eventType variable below with event type, i.e. "Hurricane", where applicable
+var eventType = "Hurricane";
 var mapServicesRoot = "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN";
 var stnDomain = "stn.wim.usgs.gov";
 
@@ -143,15 +146,17 @@ require([
                     }
                 },
                 "USGS NWIS Gages" : {
-                    "url": mapServicesRoot + "/STN_nwis_rt/MapServer",
+                    "url": mapServicesRoot + "/STN_nwis_rt/MapServer/0",
                     "options": {
                         "id": "nwis",
-                        "opacity": 0.90,
-                        "visible": false
+                        "opacity": 1,
+                        "visible": false,
+                        "mode": FeatureLayer.MODE_SNAPSHOT,
+                        "outFields": ["*"]
                     },
                     "wimOptions": {
                         "type": "layer",
-                        "layerType": "agisDynamic",
+                        "layerType": "agisFeature",
                         "includeInLayerList": true,
                         "includeLegend": true,
                         "identifiable" :true
