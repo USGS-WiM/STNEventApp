@@ -204,6 +204,10 @@ body {
     padding: 0;
 }
 
+.nwis-modal {
+    width: 430px;
+}
+
 .panel-heading a:after {
     font-family:'Glyphicons Halflings';
     content:"\e114";
