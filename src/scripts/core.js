@@ -300,6 +300,7 @@ require([
         'esri/layers/WMSLayerInfo',
         'dijit/form/CheckBox',
         'dijit/form/RadioButton',
+        "dojo/request/xhr",
         'dojo/query',
         'dojo/dom',
         'dojo/dom-class',
@@ -320,6 +321,7 @@ require([
         WMSLayerInfo,
         CheckBox,
         RadioButton,
+        xhr,
         query,
         dom,
         domClass,
@@ -367,6 +369,7 @@ require([
                             $('#city').html(evt.graphic.attributes.CITY);
                             $('#county').html(evt.graphic.attributes.COUNTY);
                             $('#state').html(evt.graphic.attributes.STATE);
+                            $('.latLng').html(evt.graphic.attributes.LATITUDE_DD.toFixed(4) +', ' + evt.graphic.attributes.LONGITUDE_DD.toFixed(4));
                             $('#siteName').html(evt.graphic.attributes.SITE_NAME);
                             $('#status').html(evt.graphic.attributes.STATUS);
 
@@ -413,13 +416,38 @@ require([
                             $('#hwmWaterbody').html(evt.graphic.attributes.WATERBODY);
                             $('#hwmCounty').html(evt.graphic.attributes.COUNTY);
                             $('#hwmState').html(evt.graphic.attributes.STATE);
-                            $('#hwmID').html(evt.graphic.attributes.HWM_ID);
+                            $('.latLng').html(evt.graphic.attributes.LATITUDE_DD.toFixed(4) +', ' + evt.graphic.attributes.LONGITUDE_DD.toFixed(4));
+                            $('.hwmID').html(evt.graphic.attributes.HWM_ID);
                             $('#hwmSiteName').html(evt.graphic.attributes.SITE_NAME);
                             $('#hwmDescription').html(evt.graphic.attributes.HWM_LOCATIONDESCRIPTION);
                             $('#hwmType').html(evt.graphic.attributes.HWM_TYPE);
                             $('#hwmDataLink').html('<a target="_blank" href="http://' + stnDomain + '/STNWeb/Public/HWMInfoPage?siteId=' + evt.graphic.attributes.SITE_ID +'&hwmId=' + evt.graphic.attributes.HWM_ID +'">HWM&nbsp;' + evt.graphic.attributes.HWM_ID + '</a>');
                             $('#hwmModal').modal('show');
                         }
+
+                        if (evt.graphic.attributes.Name != undefined){
+
+                            var nwisSiteId = evt.graphic.attributes.Name;
+                            xhr("/proxies/nwisChartProxy/Default.aspx",{
+                                query: {
+                                    site_no: nwisSiteId,
+                                    chart_param: "00065",
+                                    days_prev_to_current: "7"
+                                }
+                            }).then(function(result){
+                                if (result.length > 0) {
+                                    $('.nwisSiteNo').html(nwisSiteId);
+                                    $('#nwisModalBody').html("<a target='_blank' href='http://waterdata.usgs.gov/usa/nwis/uv?site_no="+ nwisSiteId + "'><img src='" + result +"' width=400/></a><br><hr><a target='_blank' href='http://waterdata.usgs.gov/nwis/inventory?agency_code=USGS&site_no="+ nwisSiteId + "'>Link to full data</a>");
+                                    $('#nwisModal').modal('show');
+                                } else {
+                                    $('.nwisSiteNo').html(nwisSiteId);
+                                    $('#nwisModalBody').html('<h5> <i class="fa fa-frown-o fa-lg"></i> No real-time graph available for this site.</h5><br><hr><a target="_blank" href="http://waterdata.usgs.gov/nwis/inventory?agency_code=USGS&site_no='+ nwisSiteId + '">Link to full data</a>');
+                                    $('#nwisModal').modal('show');
+                                }
+
+
+                            });
+                        }//end of "if" block
                     });
                 }
 
