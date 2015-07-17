@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!--IMPORTANT: update the event name below for page title -->
     <title>{EventName} Data Viewer | USGS</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -106,7 +107,7 @@
                 <form id="geosearch-form" class="form-inline">
                     <div class="checkbox">
                         <label>
-                            <input id="chkExtent" type="checkbox"> Search in Map Only
+                            <input id="chkExtent" type="checkbox"> Search in current extent only
                         </label>
                     </div>
                     <button id="btnGeosearch" type="button" class="btn btn-success btn-fixed" data-dismiss="modal"> Go </button>
@@ -251,7 +252,7 @@
                             </a>
                         </h4>
                     </div>
-                    <div id="legendCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                    <div id="legendCollapse" class="panel-collapse " role="tabpanel" aria-labelledby="headingOne">
                         <div id="legendDiv" class="panel-body"></div>
                     </div>
                 </div>

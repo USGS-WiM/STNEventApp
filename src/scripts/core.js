@@ -19,6 +19,7 @@ require([
     'esri/dijit/Geocoder',
     'esri/dijit/PopupTemplate',
     'esri/graphic',
+    "esri/graphicsUtils",
     'esri/geometry/Multipoint',
     'esri/symbols/PictureMarkerSymbol',
     "esri/geometry/webMercatorUtils",
@@ -32,22 +33,46 @@ require([
     Geocoder,
     PopupTemplate,
     Graphic,
+    graphicsUtils,
     Multipoint,
     PictureMarkerSymbol,
     webMercatorUtils,
     dom,
     on
 ) {
-    map = Map('mapDiv', {
+    map = new Map('mapDiv', {
         basemap: 'gray',
-        center: [-95.6, 38.6],
-        zoom: 5
+        //extent below is for east coast landfall
+        center: [-74.220, 36.651],
+        //extent below for gulf of mexico landfall
+        //center: [-84.349, 32.008],
+        zoom: 6
     });
     var home = new HomeButton({
         map: map
     }, "homeButton");
     home.startup();
-
+    //storm track and cone WMS///////////////////////////////////////////////////////////////////////
+    //var coneTrack = new esri.layers.WMSLayerInfo({
+    //    name: 'probConeLyr',
+    //    title: 'Probability Cone and Tracks',
+    //    transparent: false
+    //});
+    //var noaaWMSResourceInfo = {
+    //    extent: new esri.geometry.Extent( -127.177734375,17.578125,-65.302734375,52.470703125, {
+    //        wkid: 4326
+    //    }),
+    //    layerInfos: [coneTrack]
+    //};
+    //var noaaConeTrackLyr = new esri.layers.WMSLayer("http://nowcoast.noaa.gov/wms/com.esri.wms.Esrimap/wwa", {
+    //    resourceInfo: noaaWMSResourceInfo,
+    //    opacity: 0.60,
+    //    visibleLayers: ['NHC_TRACK_POLY','NHC_TRACK_LIN','NHC_TRACK_PT', 'NHC_TRACK_WWLIN',
+    //        'NHC_TRACK_PT_72DATE','NHC_TRACK_PT_120DATE','NHC_TRACK_PT_0NAMEDATE', 'NHC_TRACK_PT_MSLPLABELS',
+    //        'NHC_TRACK_PT_72WLBL','NHC_TRACK_PT_120WLBL','NHC_TRACK_PT_72CAT','NHC_TRACK_PT_120CAT']
+    //});
+    //map.addLayers([noaaConeTrackLyr]);
+    /////////////////////////////////////////////////////////////////////////////////////////
     //following block forces map size to override problems with default behavior
     $(window).resize(function () {
         if ($("#legendCollapse").hasClass('in')) {
@@ -79,7 +104,7 @@ require([
     //updates lat/lng indicator on mouse move. does not apply on devices w/out mouse. removes "map center" label
     on(map, "mouse-move", function (cursorPosition) {
         $('#mapCenterLabel').css("display", "none");
-        if (cursorPosition.mapPoint != null) {
+        if (cursorPosition.mapPoint !== null) {
             var geographicMapPt = webMercatorUtils.webMercatorToGeographic(cursorPosition.mapPoint);
             $('#latitude').html(geographicMapPt.y.toFixed(3));
             $('#longitude').html(geographicMapPt.x.toFixed(3));
@@ -164,7 +189,7 @@ require([
 
     // Optionally confine search to map extent
     function setSearchExtent (){
-        if (dom.byId('chkExtent').checked === 1) {
+        if (dom.byId('chkExtent').checked === true) {
             geocoder.activeGeocoder.searchExtent = map.extent;
         } else {
             geocoder.activeGeocoder.searchExtent = null;
@@ -342,7 +367,7 @@ require([
         var mapLayers = [];
 
         $.each(allLayers, function (index,group) {
-            console.log('processing: ', group.groupHeading)
+            console.log('processing: ', group.groupHeading);
 
             //sub-loop over layers within this groupType
             $.each(group.layers, function (layerName,layerDetails) {
@@ -356,7 +381,7 @@ require([
                 if (layerDetails.wimOptions.layerType === 'agisFeature') {
                     var layer = new FeatureLayer(layerDetails.url, layerDetails.options);
                     //check if include in legend is true
-                    if (layerDetails.wimOptions && layerDetails.wimOptions.includeLegend == true){
+                    if (layerDetails.wimOptions && layerDetails.wimOptions.includeLegend === true){
                         legendLayers.push({layer:layer, title: layerName});
                     }
                     addLayer(group.groupHeading, group.showGroupHeading, layer, layerName, exclusiveGroupName, layerDetails.options, layerDetails.wimOptions);
@@ -364,7 +389,7 @@ require([
 
                     on(layer, "click", function (evt) {
 
-                        if (evt.graphic.attributes.INSTRUMENT_ID != undefined) {
+                        if (evt.graphic.attributes.INSTRUMENT_ID !== undefined) {
                             $('#sensorEvent').html(evt.graphic.attributes.EVENT_NAME);
                             $('#city').html(evt.graphic.attributes.CITY);
                             $('#county').html(evt.graphic.attributes.COUNTY);
@@ -408,9 +433,9 @@ require([
                                 }
                             });
                             $('#sensorModal').modal('show');
-                            $('#sensorTab').tab('show')
+                            $('#sensorTab').tab('show');
                         }
-                        if (evt.graphic.attributes.HWM_ID != undefined) {
+                        if (evt.graphic.attributes.HWM_ID !== undefined) {
                             $('#hwmEvent').html(evt.graphic.attributes.EVENT_NAME);
                             $('#hwmElev').html(evt.graphic.attributes.ELEV_FT);
                             $('#hwmWaterbody').html(evt.graphic.attributes.WATERBODY);
@@ -425,7 +450,7 @@ require([
                             $('#hwmModal').modal('show');
                         }
 
-                        if (evt.graphic.attributes.Name != undefined){
+                        if (evt.graphic.attributes.Name !== undefined){
 
                             var nwisSiteId = evt.graphic.attributes.Name;
                             xhr("/proxies/nwisChartProxy/Default.aspx",{
@@ -454,7 +479,7 @@ require([
                 else if (layerDetails.wimOptions.layerType === 'agisWMS') {
                     var layer = new WMSLayer(layerDetails.url, {resourceInfo: layerDetails.options.resourceInfo, visibleLayers: layerDetails.options.visibleLayers }, layerDetails.options);
                     //check if include in legend is true
-                    if (layerDetails.wimOptions && layerDetails.wimOptions.includeLegend == true){
+                    if (layerDetails.wimOptions && layerDetails.wimOptions.includeLegend === true){
                         legendLayers.push({layer:layer, title: layerName});
                     }
                     //map.addLayer(layer);
@@ -466,17 +491,17 @@ require([
 
                     var layer = new ArcGISDynamicMapServiceLayer(layerDetails.url, layerDetails.options);
 
-                    if (layerDetails.wimOptions.identifiable == true){
+                    if (layerDetails.wimOptions.identifiable === true){
                         identifyLayers.push({id:layerDetails.options.id, url: layerDetails.url})
                     }
                     //check for layer definition and apply it
-                    if (layerDetails.options.layerDefinitions != null) {
+                    if (layerDetails.options.layerDefinitions !== null) {
                         var layerDef =[];
                         layerDef.push(layerDetails.options.layerDefinitions);
                         layer.setLayerDefinitions(layerDef);
                     }
                     //check if include in legend is true
-                    if (layerDetails.wimOptions && layerDetails.wimOptions.includeLegend == true){
+                    if (layerDetails.wimOptions && layerDetails.wimOptions.includeLegend === true){
                         legendLayers.push({layer:layer, title: layerName});
                     }
                     if (layerDetails.visibleLayers) {
@@ -580,9 +605,9 @@ require([
 
                 //create layer toggle
                 //var button = $('<div align="left" style="cursor: pointer;padding:5px;"><span class="glyphspan glyphicon glyphicon-check"></span>&nbsp;&nbsp;' + layerName + '</div>');
-                if (layer.visible && wimOptions.hasOpacitySlider !== undefined && wimOptions.hasOpacitySlider == true) {
+                if (layer.visible && wimOptions.hasOpacitySlider !== undefined && wimOptions.hasOpacitySlider === true) {
                     var button = $('<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons"> <button type="button" class="btn btn-default active" aria-pressed="true" style="font-weight: bold;text-align: left"><i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName + '<span id="opacity' + camelize(layerName) + '" class="glyphspan glyphicon glyphicon-adjust pull-right"></button></span></div>');
-                } else if ((!layer.visible && wimOptions.hasOpacitySlider !== undefined && wimOptions.hasOpacitySlider == true)) {
+                } else if ((!layer.visible && wimOptions.hasOpacitySlider !== undefined && wimOptions.hasOpacitySlider === true)) {
                     var button = $('<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons"> <button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left"><i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName + '<span id="opacity' + camelize(layerName) + '" class="glyphspan glyphicon glyphicon-adjust pull-right"></button></span></div>');
                 } else if (layer.visible) {
                     var button = $('<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons"> <button type="button" class="btn btn-default active" aria-pressed="true" style="font-weight: bold;text-align: left"><i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName + '</button></span></div>');
@@ -638,7 +663,7 @@ require([
                             $(".opacitySlider").remove();
                             var currOpacity = map.getLayer(options.id).opacity;
                             var slider = $('<div class="opacitySlider"><label id="opacityValue">Opacity: ' + currOpacity + '</label><label class="opacityClose pull-right">X</label><input id="slider" type="range"></div>');
-                            $("body").append(slider);[0]
+                            $("body").append(slider);[0];
 
                             $("#slider")[0].value = currOpacity*100;
                             $(".opacitySlider").css('left', event.clientX-180);
@@ -655,7 +680,7 @@ require([
                                 //get the value of the slider with this call
                                 var o = ($('#slider')[0].value)/100;
                                 console.log("o: " + o);
-                                $("#opacityValue").html("Opacity: " + o)
+                                $("#opacityValue").html("Opacity: " + o);
                                 map.getLayer(options.id).setOpacity(o);
                                 //here I am just specifying the element to change with a "made up" attribute (but don't worry, this is in the HTML specs and supported by all browsers).
                                 //var e = '#' + $(this).attr('data-wjs-element');
@@ -734,7 +759,7 @@ require([
 
                             if (visibleLayer == legendLayer.layerId) {
 
-                                console.log(layerName, visibleLayer,legendLayer.layerId, legendLayer)
+                                console.log(layerName, visibleLayer,legendLayer.layerId, legendLayer);
 
                                 //console.log($('#' + camelize(layerName)).find('<strong>&nbsp;&nbsp;' + legendLayer.layerName + '</strong></br>'))
 

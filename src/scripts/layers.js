@@ -1,13 +1,15 @@
 /**
  * Created by bdraper on 4/27/2015.
  */
-var allLayers;
 //IMPORTANT: replace eventName variable below with desired event name from STN Event
 var eventName = "Sandy";
-//replace eventType variable below with event type, i.e. "Hurricane", where applicable
+//IMPORTANT(optional):replace eventType variable below with event type, i.e. "Hurricane", where applicable. If not a hurricane, leave string empty.
 var eventType = "Hurricane";
+//the map services root variable should be static, but change if necessary
 var mapServicesRoot = "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN";
+//stnDomain variable should be static, but change if necessary
 var stnDomain = "stn.wim.usgs.gov";
+var allLayers;
 
 require([
     "esri/geometry/Extent",
@@ -22,7 +24,7 @@ require([
 
     allLayers = [
         {
-            "groupHeading": "Sensor Data",
+            "groupHeading": "Event Data",
             "showGroupHeading": true,
             "includeInLayerList": true,
             "layers": {
@@ -30,7 +32,7 @@ require([
                     "url" : mapServicesRoot + "/Barometric/MapServer/0",
                     "options": {
                         "id": "baro",
-                        "opacity": 0.85,
+                        "opacity": 1,
                         "visible": true,
                         "mode": FeatureLayer.MODE_SNAPSHOT,
                         "outFields": ["*"],
@@ -41,6 +43,7 @@ require([
                         "layerType": "agisFeature",
                         "includeInLayerList": true,
                         "includeLegend" : true,
+                        "hasOpacitySlider": true,
                         "identifiable" :true
                     }
                 },
@@ -48,7 +51,7 @@ require([
                     "url" : mapServicesRoot + "/Meteorological/MapServer/0",
                     "options": {
                         "id": "met",
-                        "opacity": 0.85,
+                        "opacity": 1,
                         "visible": true,
                         "mode": FeatureLayer.MODE_SNAPSHOT,
                         "outFields": ["*"],
@@ -67,7 +70,7 @@ require([
                     "url" : mapServicesRoot + "/RapidDeployGage/MapServer/0",
                     "options": {
                         "id": "rdg",
-                        "opacity": 0.85,
+                        "opacity": 1,
                         "visible": true,
                         "mode": FeatureLayer.MODE_SNAPSHOT,
                         "outFields": ["*"],
@@ -86,7 +89,7 @@ require([
                     "url" : mapServicesRoot + "/StormTide/MapServer/0",
                     "options": {
                         "id": "stormTide",
-                        "opacity": 0.85,
+                        "opacity": 1,
                         "visible": true,
                         "mode": FeatureLayer.MODE_SNAPSHOT,
                         "outFields": ["*"],
@@ -105,7 +108,7 @@ require([
                     "url" : mapServicesRoot + "/WaveHeight/MapServer/0",
                     "options": {
                         "id": "waveHeight",
-                        "opacity": 0.85,
+                        "opacity": 1,
                         "visible": true,
                         "mode": FeatureLayer.MODE_SNAPSHOT,
                         "outFields": ["*"],
@@ -119,19 +122,12 @@ require([
                         "includeLegend" : true,
                         "identifiable" :true
                     }
-                }
-            }
-        },
-        {
-            "groupHeading": "Observed Data",
-            "showGroupHeading": true,
-            "includeInLayerList": true,
-            "layers": {
+                },
                 "High-water Marks" : {
                     "url": mapServicesRoot + "/HWMs/MapServer/0",
                     "options": {
                         "id": "hwms",
-                        "opacity": 0.85,
+                        "opacity": 1,
                         "visible": false,
                         "mode": FeatureLayer.MODE_SNAPSHOT,
                         "outFields": ["*"],
@@ -141,6 +137,7 @@ require([
                         "type": "layer",
                         "layerType": "agisFeature",
                         "includeInLayerList": true,
+                        "hasOpacitySlider": true,
                         "includeLegend" : true,
                         "identifiable" :true
                     }
@@ -176,6 +173,39 @@ require([
                         "includeLegend": false,
                         "hasOpacitySlider": true,
                         "identifiable" :false
+                    }
+                },
+                "NOAA Storm Track ": {
+                    "url" : "http://nowcoast.noaa.gov/wms/com.esri.wms.Esrimap/wwa",
+                    "options":{
+                        "id": "noaaConeTrack",
+                        "transparent":false,
+                        "opacity": 0.8,
+                        "visible": true,
+                        "resourceInfo":  {
+                            "extent": new Extent( -127.177734375,17.578125,-65.302734375,52.470703125, {
+                                "wkid": 4326
+                            }),
+                            "layerInfos": [new WMSLayerInfo({
+                                "name": 'noaaConeTrack',
+                                "title": 'Probability Cone and Tracks',
+                                "transparent": false
+                            })]
+                        },
+                        "visibleLayers": ['NHC_TRACK_POLY','NHC_TRACK_LIN','NHC_TRACK_PT', 'NHC_TRACK_WWLIN',
+                            'NHC_TRACK_PT_72DATE','NHC_TRACK_PT_120DATE','NHC_TRACK_PT_0NAMEDATE', 'NHC_TRACK_PT_MSLPLABELS',
+                            'NHC_TRACK_PT_72WLBL','NHC_TRACK_PT_120WLBL','NHC_TRACK_PT_72CAT','NHC_TRACK_PT_120CAT']
+                    },
+                    "wimOptions": {
+                        "type": "layer",
+                        "layerType": "agisWMS",
+                        "includeInLayerList": true,
+                        "includeLegend": true,
+                        "staticLegendOptions": {
+                            "hasStaticLegend": false,
+                            "legendTitle": "",
+                            "legendUrl": "http://nowcoast.noaa.gov/LayerInfo?layer=NHC_TRACK_POLY&data=legend"
+                        }
                     }
                 }
             }
