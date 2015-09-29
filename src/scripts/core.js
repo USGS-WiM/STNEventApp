@@ -309,6 +309,10 @@ require([
             $('#legendElement').css('height', 'initial');
         });
 
+        $('#sensorModal').on('hidden.bs.modal', function () {
+            $('#rdgChartDiv').empty();
+        });
+
     });
 
     require([
@@ -431,7 +435,59 @@ require([
                                     console.log("Error processing the peaks JSON response. The error is:" + error);
                                     $('#peaksTable').html('An error occurred retrieving peaks data. Please try again. ');
                                 }
+
                             });
+
+                            if (evt.graphic.attributes.SENSOR == "Rapid Deployment Gage") {
+
+                                $('#rdgChartDiv').html('<i class="fa fa-circle-o-notch fa-spin fa-2x"></i>');
+
+                                //var to hold USGS ID of stn site after retrieval by ajax call below
+                                var usgsID = "";
+                                var stnSiteID = evt.graphic.attributes.SITE_ID;
+                                //ajax call to retrieve the USGS site ID from the sites endpoint, based on STN site ID. Needed to make NWIS request
+                                $.ajax({
+                                    dataType: 'json',
+                                    type: 'GET',
+                                    url: "http://stn.wim.usgs.gov/STNServices/Sites/" + stnSiteID + ".json",
+                                    headers: {'Accept': '*/*'},
+                                    success: function (data) {
+                                        usgsID = data.USGS_SID;
+
+                                        //$('#rdgChartDiv').html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+
+                                        //dojo xhr request to nwisChart proxy
+                                        xhr("/proxies/rdgChartProxy/Default.aspx",{
+                                            query: {
+                                                site_no: usgsID,
+                                                //chart_param: "00065",
+                                                //days_prev_to_current: "7",
+                                                begin_date: "2015-09-25",
+                                                end_date: "2015-09-28"
+                                            }
+                                        }).then(function(result){
+                                            if (result.length > 0) {
+
+                                                if((result.indexOf("no data")) == -1) {
+                                                    $('#rdgChartDiv').html("<a target='_blank' href='http://waterdata.usgs.gov/usa/nwis/uv?site_no="+ usgsID + "'><img class='img-responsive' src='" + result +"'/></a><br><hr><a target='_blank' href='http://waterdata.usgs.gov/nwis/inventory?agency_code=USGS&site_no="+ usgsID + "'>Link to full NWIS data</a>");
+
+                                                } else {
+                                                    $('#rdgChartDiv').html('<h5> <i class="fa fa-frown-o fa-lg"></i> No real-time graph available for this site.</h5><br><hr><a target="_blank" href="http://waterdata.usgs.gov/nwis/inventory?agency_code=USGS&site_no='+ usgsID + '">Link to full data</a>');
+                                                }
+                                            } else {
+                                                console.log("No RDG chart returned");
+                                            }
+                                        });
+
+                                    },
+                                    error: function () {
+                                        usgsID = "null";
+                                    }
+
+                                });
+                            }
+                            //end if RDG
+
                             $('#sensorModal').modal('show');
                             $('#sensorTab').tab('show');
                         }

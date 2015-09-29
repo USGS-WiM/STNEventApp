@@ -2,9 +2,9 @@
  * Created by bdraper on 4/27/2015.
  */
 //IMPORTANT: replace eventName variable below with desired event name from STN Event
-var eventName = "Sandy";
+var eventName = "Floods of 2015";
 //IMPORTANT(optional):replace eventType variable below with event type, i.e. "Hurricane", where applicable. If not a hurricane, leave string empty.
-var eventType = "Hurricane";
+var eventType = "";
 //the map services root variable should be static, but change if necessary
 var mapServicesRoot = "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN";
 //stnDomain variable should be static, but change if necessary
