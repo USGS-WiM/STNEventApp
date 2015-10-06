@@ -287,6 +287,13 @@ require([
             showModal();
         });
 
+        function showAboutModal () {
+            $('#aboutModal').modal('show');
+        }
+        $('#aboutNav').click(function(){
+            showAboutModal();
+        });
+
         $("#html").niceScroll();
         $("#sidebar").niceScroll();
         $("#sidebar").scroll(function () {
@@ -463,7 +470,7 @@ require([
                                                 //chart_param: "00065",
                                                 //days_prev_to_current: "7",
                                                 begin_date: "2015-09-25",
-                                                end_date: "2015-09-28"
+                                                end_date: "2015-09-30"
                                             }
                                         }).then(function(result){
                                             if (result.length > 0) {
