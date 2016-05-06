@@ -32,7 +32,12 @@
             </button>
             <a class="navbar-brand" href="http://usgs.gov">
                 <img alt="USGS logo" height="38px" src="images/USGS_ID_white.png">
-                <span class='hidden-xs' style='font-size:20px;display:inline-block;'>&nbsp;&nbsp;<span class="eventType"></span><span class="eventName"></span> Data Viewer </span> <span style="color:red;">NOT FOR RELEASE</span>
+                <!--<span class='hidden-xs' style='font-size:20px;display:inline-block;'>&nbsp;&nbsp;-->
+                <span class='hidden-xs' style='font-size:20px;display:inline-block;'>Data Viewer</span>
+                <span class="eventName hidden-xs"  style='font-size:20px;display:inline-block;'></span>
+                <!--<span class="eventType hidden-xs"  style='font-size:20px;display:inline-block;'></span>-->
+
+                <!--</span>-->
             </a>
         </div>
 
@@ -54,7 +59,9 @@
             <div class="modal-header">
                 <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
                 <!--<h4 class="modal-title">{Event Name} Data Viewer</h4>-->
+                <!--<h4>Welcome to the USGS <span class="eventType"></span><span class="eventName"></span> Data Viewer</h4><i class="fa fa-exclamation-triangle fa-lg"></i> Please read the following message before continuing..-->
                 <h4>Welcome to the USGS <span class="eventType"></span><span class="eventName"></span> Data Viewer</h4><i class="fa fa-exclamation-triangle fa-lg"></i> Please read the following message before continuing.
+
             </div>
             <div class="modal-body">
                 <!--<h4>Welcome to the {Event Name} Data Viewer</h4><b>Please read the following message before continuing.</b>-->
@@ -87,7 +94,7 @@
                     <div role="tabpanel" class="tab-pane" id="aboutTabPane"></br>
                         <p style="color:black; font-size: larger">The USGS <span class="eventType"></span><span class="eventName"></span> Data Viewer is developed by the Wisconsin Internet Mapping (WiM) group to aid in dissemination of flood sensor data collected in the Short-Term Network database.</p>
                         <p><b>REST map services used in this application:</b> </p>
-                        <p>USGS Short-Term Network (STN) sensor & high-water mark data: <a href="http://stnmapservices.wim.usgs.gov:6080/arcgis/rest/services/STN" target="_blank">stnmapservices.wim.usgs.gov:6080/arcgis/rest/services/STN</a></p>
+                        <p>USGS Short-Term Network (STN) sensor & high-water mark data: <a href="https://stnmapservices.wim.usgs.gov/arcgis/rest/services/STN" target="_blank">stnmapservices.wim.usgs.gov/arcgis/rest/services/STN</a></p>
                         <p>NOAA weather radar: <a href="http://gis.srh.noaa.gov/arcgis/rest/services/RIDGERadar/MapServer" target="_blank">gis.srh.noaa.gov/arcgis/rest/services/RIDGERadar/MapServerN</a></p>
                         <p>NOAA tropical cyclone track and forecast: <a href="http://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/wwa_meteocean_tropicalcyclones_trackintensityfcsts_time/MapServer" target="_blank">nowcoast.noaa.gov/arcgis/rest/services/nowcoast/wwa_meteocean_tropicalcyclones_trackintensityfcsts_time/MapServer</a></p>
                         <p><b>Other useful links:</b> </p>
@@ -166,6 +173,7 @@
                             <tr><td><strong>State: </strong></td><td><span id="state"></span></td></tr>
                             <tr><td><strong>Latitude, Longitude (DD): </strong></td><td><span class="latLng"></span></td></tr>
                             <tr><td><strong>STN Site Name: </strong></td><td><span id="siteName"></span></td></tr>
+                            <tr><td><strong>Site Description: </strong></td><td><span id="siteDescription"></span></td></tr>
                             <tr><td><strong>Status: </strong></td><td><span id="status"></span></td></tr>
                             <tr><td><strong>Full data link: </strong></td><td><span id="sensorDataLink"></span></td></tr>
                         </table>
@@ -203,6 +211,20 @@
                     <tr><td><strong>Type: </strong></td><td><span id="hwmType"></span></td></tr>
                     <tr><td><strong>Full data link: </strong></td><td><span id="hwmDataLink"></span></td></tr>
                 </table>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="peakModal" class="modal fade"  tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-hidden="true" style="color:gray;">&times;</button>
+                <h4 class="modal-title">Peak Storm Tide Elevation <span class="peakID"></span></h4>
+            </div>
+            <div id="peakModalBody" class="modal-body">
+                <table id="peaksModalTable" class="table table-condensed table-striped table-hover"></table>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

@@ -46,7 +46,8 @@ require([
         center: [-74.220, 36.651],
         //extent below for gulf of mexico landfall
         //center: [-84.349, 32.008],
-        zoom: 6
+        zoom: 6,
+        logo: false
     });
     var home = new HomeButton({
         map: map
@@ -407,6 +408,7 @@ require([
                             $('#state').html(evt.graphic.attributes.STATE);
                             $('.latLng').html(evt.graphic.attributes.LATITUDE_DD.toFixed(4) +', ' + evt.graphic.attributes.LONGITUDE_DD.toFixed(4));
                             $('#siteName').html(evt.graphic.attributes.SITE_NAME);
+                            $('#siteDescription').html(evt.graphic.attributes.SITE_DESCRIPTION);
                             $('#status').html(evt.graphic.attributes.STATUS);
 
                             $('#sensorDataLink').html('<a target="_blank" href="http://' + stnDomain + '/STNWeb/Public/SensorInfoPage?siteId=' + evt.graphic.attributes.SITE_ID +'&sensorId=' + evt.graphic.attributes.INSTRUMENT_ID +'">Sensor&nbsp;' + evt.graphic.attributes.INSTRUMENT_ID + '</a>');
@@ -463,23 +465,23 @@ require([
 
                                         //$('#rdgChartDiv').html('<i class="fa fa-circle-o-notch fa-spin"></i>');
 
-                                        //dojo xhr request to nwisChart proxy
+                                        //dojo xhr request to rdgChart proxy
                                         xhr("/proxies/rdgChartProxy/Default.aspx",{
                                             query: {
                                                 site_no: usgsID,
                                                 //chart_param: "00065",
-                                                //days_prev_to_current: "7",
-                                                begin_date: "2015-09-25",
-                                                end_date: "2015-09-30"
+                                                //days_prev_to_current: "8"
+                                                begin_date: "2015-10-02",
+                                                end_date: "2015-10-09"
                                             }
                                         }).then(function(result){
                                             if (result.length > 0) {
 
                                                 if((result.indexOf("no data")) == -1) {
-                                                    $('#rdgChartDiv').html("<a target='_blank' href='http://waterdata.usgs.gov/usa/nwis/uv?site_no="+ usgsID + "'><img class='img-responsive' src='" + result +"'/></a><br><hr><a target='_blank' href='http://waterdata.usgs.gov/nwis/inventory?agency_code=USGS&site_no="+ usgsID + "'>Link to full NWIS data</a>");
+                                                    $('#rdgChartDiv').html("<a target='_blank' href='http://waterdata.usgs.gov/usa/nwis/uv?site_no="+ usgsID + "'><img class='img-responsive' src='" + result +"'/></a><br><hr><a target='_blank' href='http://waterdata.usgs.gov/usa/nwis/uv?site_no="+ usgsID + "'>Link to full NWIS data</a>");
 
                                                 } else {
-                                                    $('#rdgChartDiv').html('<h5> <i class="fa fa-frown-o fa-lg"></i> No real-time graph available for this site.</h5><br><hr><a target="_blank" href="http://waterdata.usgs.gov/nwis/inventory?agency_code=USGS&site_no='+ usgsID + '">Link to full data</a>');
+                                                    $('#rdgChartDiv').html('<h5> <i class="fa fa-frown-o fa-lg"></i> No real-time graph available for this site.</h5><br><hr><a target="_blank" href="http://waterdata.usgs.gov/usa/nwis/uv?site_no='+ usgsID + '">Link to full data</a>');
                                                 }
                                             } else {
                                                 console.log("No RDG chart returned");
@@ -513,6 +515,47 @@ require([
                             $('#hwmModal').modal('show');
                         }
 
+
+                        if (evt.graphic.attributes.PEAK_STAGE !== undefined){
+
+                            //update peak conditions modal table with a fresh header row
+                            $('#peaksModalTable').html('<tr><th>Event</th><th>Peak Stage (ft)</th><th>Datum</th><th>Peak Date & Time (UTC)</th></tr>');
+
+                            var geometry = evt.mapPoint.x + "," + evt.mapPoint.y;
+                            var mapExtent = map.extent.xmin + "," + map.extent.ymin + "," + map.extent.xmax + "," + map.extent.ymax;
+                            var imageDisplay = (map.height + "," + map.width + "," + 96);
+                            var peaksServiceURL = mapServicesRoot + "/Peaks/MapServer";
+                            $.ajax({
+                                dataType: 'json',
+                                type: 'GET',
+                                url: peaksServiceURL + '/identify?f=json&geometry=' + geometry + '&tolerance=3&mapExtent=' + mapExtent + '&layerDefs=0%3AEVENT_NAME%3D%27' + eventName + '%27' + '&imageDisplay=' + imageDisplay,
+                                headers: {'Accept': '*/*'},
+                                success: function (data) {
+                                    if (data.results.length > 0) {
+                                        //loop below is used for situtations where there are multiple results - removed for now b/c arcserver is returning multiples of same data
+                                        for (var i = 0; i < data.results.length; i++) {
+                                            var attributes = data.results[i].attributes;
+                                            //append each peak result as a new table row
+                                            $('#peaksModalTable').append('<tr><td>' + attributes.EVENT_NAME + '</td><td>' + attributes.PEAK_STAGE + '</td><td>' + attributes.DATUM_NAME + '</td><td>' + attributes.PEAK_DATE + '</td></tr>');
+                                        }
+                                        //line below grabs first result, which ought to be the only one needed - other results are duplicates caused by some arcserver nonsense
+                                        //var attributes = data.results[0].attributes;
+                                        //append each peak result as a new table row
+                                        //$('#peaksModalTable').append('<tr><td>' + attributes.EVENT_NAME + '</td><td>' + attributes.PEAK_STAGE + '</td><td>' + attributes.DATUM_NAME + '</td><td>' + attributes.PEAK_DATE + '</td></tr>');
+                                    } else {
+                                        $('#peaksModalTable').html('No peaks associated with this location');
+                                    }
+                                },
+                                error: function (error) {
+                                    console.log("Error processing the peaks JSON response. The error is:" + error);
+                                    $('#peaksModalTable').html('An error occurred retrieving peaks data. Please try again. ');
+                                }
+
+                            });
+                            $('#peakModal').modal('show');
+                        }
+
+
                         if (evt.graphic.attributes.Name !== undefined){
 
                             var nwisSiteId = evt.graphic.attributes.Name;
@@ -520,7 +563,10 @@ require([
                                 query: {
                                     site_no: nwisSiteId,
                                     chart_param: "00065",
-                                    days_prev_to_current: "7"
+                                    //days_prev_to_current: "7"
+                                    begin_date : "2015-10-02",
+                                    end_date : "2015-10-09"
+
                                 }
                             }).then(function(result){
                                 if (result.length > 0) {

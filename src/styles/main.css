@@ -13,8 +13,6 @@ body {
 }
 
 #aboutNav {
-    /*background-color: #474747;*/
-
     background: 0 0;
     border: none;
     line-height: 16px;
@@ -43,7 +41,6 @@ body {
 #aboutNav:focus{
     outline: none;
 }
-
 
 .alert-info {
     /*background-color: #d9edf7;*/
@@ -112,6 +109,7 @@ body {
 .hover-content {
     display:none;
 }
+
 
 .identification {
     text-transform: uppercase;
