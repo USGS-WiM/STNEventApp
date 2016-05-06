@@ -2,11 +2,11 @@
  * Created by bdraper on 4/27/2015.
  */
 //IMPORTANT: replace eventName variable below with desired event name from STN Event
-var eventName = "Joaquin";
+var eventName = "Sandy";
 //IMPORTANT(optional):replace eventType variable below with event type, i.e. "Hurricane", where applicable. If not a hurricane, leave string empty.
-var eventType = "Hurricane";
+var eventType = "";
 //the map services root variable should be static, but change if necessary
-var mapServicesRoot = "http://stnmapservices.wimcloud.usgs.gov:6080/arcgis/rest/services/STN";
+var mapServicesRoot = "https://stnmapservices.wim.usgs.gov/arcgis/rest/services/STN";
 //stnDomain variable should be static, but change if necessary
 var stnDomain = "stn.wim.usgs.gov";
 var allLayers;
@@ -44,12 +44,29 @@ require([
                         "identifiable" :false
                     }
                 },
+                //"FEMA Flood Inundation" : {
+                //    "url": mapServicesRoot + "/joaquin/MapServer/1",
+                //    "options": {
+                //        "id": "inundation",
+                //        "opacity": 1,
+                //        "visible": true,
+                //        "mode": FeatureLayer.MODE_SNAPSHOT,
+                //        "outFields": ["*"]
+                //    },
+                //    "wimOptions": {
+                //        "type": "layer",
+                //        "layerType": "agisFeature",
+                //        "includeInLayerList": true,
+                //        "includeLegend": true,
+                //        "identifiable" :true
+                //    }
+                //},
                 "Barometric": {
                     "url" : mapServicesRoot + "/Barometric/MapServer/0",
                     "options": {
                         "id": "baro",
                         "opacity": 1,
-                        "visible": true,
+                        "visible": false,
                         "mode": FeatureLayer.MODE_SNAPSHOT,
                         "outFields": ["*"],
                         "definitionExpression": "EVENT_NAME = '" + eventName + "'"
@@ -68,7 +85,7 @@ require([
                     "options": {
                         "id": "met",
                         "opacity": 1,
-                        "visible": true,
+                        "visible": false,
                         "mode": FeatureLayer.MODE_SNAPSHOT,
                         "outFields": ["*"],
                         "definitionExpression": "EVENT_NAME = '" + eventName + "'"
@@ -106,7 +123,7 @@ require([
                     "options": {
                         "id": "stormTide",
                         "opacity": 1,
-                        "visible": true,
+                        "visible": false,
                         "mode": FeatureLayer.MODE_SNAPSHOT,
                         "outFields": ["*"],
                         "definitionExpression": "EVENT_NAME = '" + eventName + "'"
@@ -125,7 +142,7 @@ require([
                     "options": {
                         "id": "waveHeight",
                         "opacity": 1,
-                        "visible": true,
+                        "visible": false,
                         "mode": FeatureLayer.MODE_SNAPSHOT,
                         "outFields": ["*"],
                         "definitionExpression": "EVENT_NAME = '" + eventName + "'"
@@ -144,7 +161,7 @@ require([
                     "options": {
                         "id": "hwms",
                         "opacity": 1,
-                        "visible": false,
+                        "visible": true,
                         "mode": FeatureLayer.MODE_SNAPSHOT,
                         "outFields": ["*"],
                         "definitionExpression": "EVENT_NAME = '" + eventName + "'"
@@ -158,7 +175,25 @@ require([
                         "identifiable" :true
                     }
                 },
-                "USGS NWIS Gages" : {
+                // "Peaks" : {
+                //     "url": mapServicesRoot + "/joaquin/MapServer/0",
+                //     "options": {
+                //         "id": "peaks",
+                //         "opacity": 1,
+                //         "visible": true,
+                //         "mode": FeatureLayer.MODE_SNAPSHOT,
+                //         "outFields": ["*"]
+                //     },
+                //     "wimOptions": {
+                //         "type": "layer",
+                //         "layerType": "agisFeature",
+                //         "includeInLayerList": true,
+                //         "hasOpacitySlider": true,
+                //         "includeLegend" : true,
+                //         "identifiable" :true
+                //     }
+                // },
+                "USGS real-time NWIS gages" : {
                     "url": mapServicesRoot + "/STN_nwis_rt/MapServer/0",
                     "options": {
                         "id": "nwis",
@@ -191,39 +226,40 @@ require([
                         "identifiable" :false
                     }
                 }
-                //"NOAA Storm Track ": {
-                //    "url" : "http://nowcoast.noaa.gov/wms/com.esri.wms.Esrimap/wwa",
-                //    "options":{
-                //        "id": "noaaConeTrack",
-                //        "transparent":false,
-                //        "opacity": 0.8,
-                //        "visible": true,
-                //        "resourceInfo":  {
-                //            "extent": new Extent( -127.177734375,17.578125,-65.302734375,52.470703125, {
-                //                "wkid": 4326
-                //            }),
-                //            "layerInfos": [new WMSLayerInfo({
-                //                "name": 'noaaConeTrack',
-                //                "title": 'Probability Cone and Tracks',
-                //                "transparent": false
-                //            })]
-                //        },
-                //        "visibleLayers": ['NHC_TRACK_POLY','NHC_TRACK_LIN','NHC_TRACK_PT', 'NHC_TRACK_WWLIN',
-                //            'NHC_TRACK_PT_72DATE','NHC_TRACK_PT_120DATE','NHC_TRACK_PT_0NAMEDATE', 'NHC_TRACK_PT_MSLPLABELS',
-                //            'NHC_TRACK_PT_72WLBL','NHC_TRACK_PT_120WLBL','NHC_TRACK_PT_72CAT','NHC_TRACK_PT_120CAT']
-                //    },
-                //    "wimOptions": {
-                //        "type": "layer",
-                //        "layerType": "agisWMS",
-                //        "includeInLayerList": true,
-                //        "includeLegend": true,
-                //        "staticLegendOptions": {
-                //            "hasStaticLegend": false,
-                //            "legendTitle": "",
-                //            "legendUrl": "http://nowcoast.noaa.gov/LayerInfo?layer=NHC_TRACK_POLY&data=legend"
-                //        }
-                //    }
-                //}
+                // "NOAA Storm Track ": {
+                //     "url" : "http://nowcoast.noaa.gov/wms/com.esri.wms.Esrimap/wwa",
+                //     "options":{
+                //         "id": "noaaConeTrack",
+                //         "transparent":false,
+                //         "opacity": 0.8,
+                //         "visible": true,
+                //         "resourceInfo":  {
+                //             "extent": new Extent( -127.177734375,17.578125,-65.302734375,52.470703125, {
+                //                 "wkid": 4326
+                //             }),
+                //             "layerInfos": [new WMSLayerInfo({
+                //                 "name": 'noaaConeTrack',
+                //                 "title": 'Probability Cone and Tracks',
+                //                 "transparent": false
+                //             })]
+                //         },
+                //         "visibleLayers": ['NHC_TRACK_POLY','NHC_TRACK_LIN','NHC_TRACK_PT', 'NHC_TRACK_WWLIN',
+                //             'NHC_TRACK_PT_72DATE','NHC_TRACK_PT_120DATE','NHC_TRACK_PT_0NAMEDATE', 'NHC_TRACK_PT_MSLPLABELS',
+                //             'NHC_TRACK_PT_72WLBL','NHC_TRACK_PT_120WLBL','NHC_TRACK_PT_72CAT','NHC_TRACK_PT_120CAT']
+                //     },
+                //     "wimOptions": {
+                //         "type": "layer",
+                //         "layerType": "agisWMS",
+                //         "includeInLayerList": true,
+                //         "includeLegend": true,
+                //         "staticLegendOptions": {
+                //             "hasStaticLegend": false,
+                //             "legendTitle": "",
+                //             "legendUrl": "http://nowcoast.noaa.gov/LayerInfo?layer=NHC_TRACK_POLY&data=legend"
+                //         }
+                //     }
+                // },
+
             }
         }
     ]
