@@ -1,0 +1,47 @@
+[
+  {
+    "name": "STNEventApp",
+    "organization": "U.S. Geological Survey",
+    "description": "Template for single event application for declared event in short-term network (STN) database",
+    "version": "v0.0.0",
+    "status":  "Archival"
+
+    "permissions": {
+      "usageType": "openSource",
+      "licenses": [
+        {
+          "name": "Public Domain",
+          "URL": "https://github.com/usgs/STNEventApp/blob/master/LICENSE.md"
+        }
+      ]
+    },
+
+    "homepageURL": null,
+    "downloadURL": "https://github.com/USGS-WiM/STNEventApp/archive/master.zip",
+    "disclaimerURL": "https://github.com/USGS-WiM/STNEventApp/blob/master/DISCLAIMER.md",
+    "repositoryUrl": "https://github.com/USGS-WiM/STNEventApp",
+    "vcs": "git",
+
+    "laborHours": null,
+
+    "tags": [
+      "stn",
+      "short-term network",
+      "event",
+      "app"
+    ],
+
+    "languages": [
+      "javascript"
+    ],
+
+    "contact": {
+      "name": "Blake Draper",
+      "email": "bdraper@usgs.gov"
+    },
+
+    "date": {
+      "metadataLastUpdated": "2018-02-16"
+    }
+  }
+]
