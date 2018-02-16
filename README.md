@@ -1,7 +1,8 @@
 # STNEventApp
 **Template for single event application for declared event in STN**
 
-##Update, 2018-02-16: Deprecated ###this repo has been  [is part of a discontinued effort] and is no longer being actively maintained.
+## Update, 2018-02-16: Deprecated 
+### This repo has been  [is part of a discontinued effort] and is no longer being actively maintained.
 
 
 STN Event Application Standup Procedure
