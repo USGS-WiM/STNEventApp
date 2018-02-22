@@ -4,7 +4,7 @@
     "organization": "U.S. Geological Survey",
     "description": "Template for single event application for declared event in short-term network (STN) database",
     "version": "v0.0.0",
-    "status":  "Archival"
+    "status":  "Archival",
 
     "permissions": {
       "usageType": "openSource",
